@@ -3,6 +3,39 @@ import java.util.*;
 
 public class Main {
 	
+	
+	public static void codeFeedback(List<Integer> secretCode, List<Integer> userGuess) {
+		
+	    List<Integer> unmatchedCode = new ArrayList<>();
+	    List<Integer> unmatchedGuess = new ArrayList<>();
+
+	    // check la position
+	    for (int i = 0; i < 4; i++) {
+	        if (!userGuess.get(i).equals(secretCode.get(i))) {
+	            unmatchedCode.add(secretCode.get(i));
+	            unmatchedGuess.add(userGuess.get(i));
+	        }
+	    }
+
+	    // check les élément mal placé
+	    for (int guessDigit : unmatchedGuess) {
+	        if (unmatchedCode.contains(guessDigit)) {
+	            System.out.println(guessDigit + " is correct but misplaced");
+	            unmatchedCode.remove((Integer) guessDigit);
+	        }
+	    }
+
+	    // les éléme,nt corrects
+	    for (int i = 0; i < 4; i++) {
+	        if (userGuess.get(i).equals(secretCode.get(i))) {
+	            System.out.println(userGuess.get(i) + " is correct and well placed");
+	        }
+	    }
+	}
+
+	
+	
+	// This method generate 4 random digits (0-9) to make the code to guess
 	public static List<Integer> generateRandomCode(){
 		
 		Random rand = new Random();
@@ -16,7 +49,7 @@ public class Main {
 		return code;
 	}
 	
-	
+	// This method take user input and check their validity
 	public static List<Integer> getValidCode(){
 		
 		Scanner scan =  new Scanner(System.in);
@@ -49,7 +82,7 @@ public class Main {
 	                    break;
 					}				
 				} catch (NumberFormatException err) {
-					System.out.println("Entrée invalide : " + mark + "\n");
+					System.out.println("Error: " + err +"\n");
 	                allValid = false;
 	                break;
 				}
@@ -68,18 +101,18 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		List<Integer> mycode = generateRandomCode();
+		List<Integer> secretCode = generateRandomCode();
 		
 		System.out.print("Le code a deviner: ");
-		for (int i = 0; i < mycode.size(); i++) {
+		for (int i = 0; i < secretCode.size(); i++) {
             System.out.print("* ");
         }
         System.out.println();
 		
 		
-		List<Integer> myGuess = getValidCode();
+		List<Integer> userGuess = getValidCode();
 		
-		System.out.println("Votre essai actuel: " + myGuess);
+		codeFeedback(secretCode, userGuess);
 		
 	
 		
