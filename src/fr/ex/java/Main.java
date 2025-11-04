@@ -3,12 +3,20 @@ import java.util.*;
 
 public class Main {
 	
-	
+	/**
+     * Updates the masked secret code based on the user's guess
+     * Correct digits in the correct position are shown, others are masked with '*'
+     *
+     * @param secretCode the secret 4-digit code to guess
+     * @param userGuess the user's current guess
+     * @return a masked string showing correct digits and masking others
+     */
 	public static String updateSecretCodeDisplay(List<Integer> secretCode, List<Integer> userGuess) {
 		StringBuilder display = new StringBuilder();
 	    List<Integer> unmatchedCode = new ArrayList<>();
 	    List<Integer> unmatchedGuess = new ArrayList<>();
 		
+	    // Used to identify unmatched digits
 	    for (int i = 0; i < 4; i++) {
 	        if (!userGuess.get(i).equals(secretCode.get(i))) {
 	            unmatchedCode.add(secretCode.get(i));
@@ -16,15 +24,18 @@ public class Main {
 	        }
 	    }
 
-	    
+	 // Build the masked display
 	    for (int i = 0; i < 4; i++) {
 	        int guessDigit = userGuess.get(i);
 	        if (guessDigit == secretCode.get(i)) {
+	        	// Correct and well placed
 	            display.append(guessDigit); 
 	        } else if (unmatchedCode.contains(guessDigit)) {
+	        	// Misplaced
 	            display.append("*"); 
 	            unmatchedCode.remove((Integer) guessDigit);
 	        } else {
+	        	//Incorrect
 	            display.append("*"); 
 	        }
 	    }
@@ -33,7 +44,12 @@ public class Main {
 	}
 	
 	
-	
+	/**
+     * Converts a list of digits into a single string ([1,2,3,4] → "1234")
+     * 
+     * @param code the list of digits
+     * @return the formatted string representation of the code
+     */
 	public static String formatCode(List<Integer> code) {
 		
 		StringBuilder formatedCode = new StringBuilder();
@@ -44,13 +60,20 @@ public class Main {
 		return formatedCode.toString();
 	}
 	
+	/**
+     * Provides feedback on the user's guess compared to the secret code
+     * Prints which digits are correct, misplaced, or incorrect
+     *
+     * @param secretCode the secret code to guess
+     * @param userGuess the user's current guess
+     */
 	public static void codeFeedback(List<Integer> secretCode, List<Integer> userGuess) {
 		
 	    List<Integer> unmatchedCode = new ArrayList<>();
 	    List<Integer> unmatchedGuess = new ArrayList<>();
 	    Set<Integer> alreadyReported = new HashSet<>();
 
-	    // check la position
+	    // Checking the position
 	    for (int i = 0; i < 4; i++) {
 	        if (!userGuess.get(i).equals(secretCode.get(i))) {
 	            unmatchedCode.add(secretCode.get(i));
@@ -59,7 +82,7 @@ public class Main {
 	        }
 	    }
 
-	    // check les élément mal placé
+	    // We check misplaced elements
 	    for (int guessDigit : unmatchedGuess) {
 	        if (unmatchedCode.contains(guessDigit)) {
 	            System.out.println(guessDigit + " est correct mais mal placé! ");
@@ -68,7 +91,7 @@ public class Main {
 	        }
 	    }
 
-	    // les éléme,nt corrects
+	    // We check correct elements
 	    for (int i = 0; i < 4; i++) {
 	        if (userGuess.get(i).equals(secretCode.get(i))) {
 	            System.out.println(userGuess.get(i) + " est correct ! ");
@@ -76,6 +99,7 @@ public class Main {
 	        }
 	    }
 	    
+	      // Report incorrect digits
 	    for (int digit : userGuess) {
 	        if (!alreadyReported.contains(digit)) {
 	            System.out.println(digit + " est incorrect !");
@@ -83,7 +107,11 @@ public class Main {
 	    }
 	}
 	
-	// This method generate 4 random digits (0-9) to make the code to guess
+	/**
+     * Generates a random 4-digit code using digits from 0 to 9
+     *
+     * @return a list of 4 random digits
+     */
 	public static List<Integer> generateRandomCode(){
 		
 		Random rand = new Random();
@@ -97,7 +125,12 @@ public class Main {
 		return code;
 	}
 	
-	// This method take user input and check their validity
+	/**
+     * Prompts the user to enter a valid 4 digit code
+     * Validates input format and check if digits are between 0 and 9
+     *
+     * @return a list of 4 digits entered by the user
+     */
 	public static List<Integer> getValidCode(){
 		
 		Scanner scan =  new Scanner(System.in);
@@ -126,6 +159,12 @@ public class Main {
 				
 	}
 
+	/**
+     * Main game loop, it generates a secret code and allows the user up to 10 attempts to guess it
+     * Provides feedback after each guess and ends when the code is guessed or attempts run out
+     *
+     * @param args command-line arguments (not used)
+     */
 	public static void main(String[] args) {
 		
 		List<Integer> secretCode = generateRandomCode();
