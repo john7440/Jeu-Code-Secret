@@ -4,16 +4,28 @@ import java.util.*;
 public class Main {
 	
 	
+	public static String formatCode(List<Integer> code) {
+		
+		StringBuilder formatedCode = new StringBuilder();
+		for (Integer digit : code) {
+			formatedCode.append(digit);
+			
+		}
+		return formatedCode.toString();
+	}
+	
 	public static void codeFeedback(List<Integer> secretCode, List<Integer> userGuess) {
 		
 	    List<Integer> unmatchedCode = new ArrayList<>();
 	    List<Integer> unmatchedGuess = new ArrayList<>();
+	    Set<Integer> alreadyReported = new HashSet<>();
 
 	    // check la position
 	    for (int i = 0; i < 4; i++) {
 	        if (!userGuess.get(i).equals(secretCode.get(i))) {
 	            unmatchedCode.add(secretCode.get(i));
 	            unmatchedGuess.add(userGuess.get(i));
+	            
 	        }
 	    }
 
@@ -22,13 +34,21 @@ public class Main {
 	        if (unmatchedCode.contains(guessDigit)) {
 	            System.out.println(guessDigit + " est correct mais mal placé! ");
 	            unmatchedCode.remove((Integer) guessDigit);
+	            alreadyReported.add(guessDigit);
 	        }
 	    }
 
 	    // les éléme,nt corrects
 	    for (int i = 0; i < 4; i++) {
 	        if (userGuess.get(i).equals(secretCode.get(i))) {
-	            System.out.println(userGuess.get(i) + " est correct! ");
+	            System.out.println(userGuess.get(i) + " est correct ! ");
+	            alreadyReported.add(userGuess.get(i));
+	        }
+	    }
+	    
+	    for (int digit : userGuess) {
+	        if (!alreadyReported.contains(digit)) {
+	            System.out.println(digit + " est incorrect !");
 	        }
 	    }
 	}
@@ -114,11 +134,11 @@ public class Main {
 		
         while (actualTry < maxTry && !found) {
         
-        	System.out.println("Essai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)");
+        	System.out.println("\nEssai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)");
         	List<Integer> userGuess = getValidCode();
         	
         	if (userGuess.equals(secretCode)) {
-        		System.out.println("Félicitations! Vous avez deviné le code secret: " + secretCode +" en " + actualTry + " essais.");
+        		System.out.println("Félicitations! Vous avez deviné le code secret: " + formatCode(secretCode) +" en " + actualTry + " essais.");
                 found = true;
         	} else {
         		codeFeedback(secretCode, userGuess);
@@ -127,13 +147,10 @@ public class Main {
         }
         
         if (!found) {
-        	System.out.println("Vous avez perdu! Le code a trouver était: " + secretCode);
+        	System.out.println("Vous avez perdu! Le code a trouver était: " + formatCode(secretCode));
         }
 	
-		
 
 	}
-	
-	
 
 }
