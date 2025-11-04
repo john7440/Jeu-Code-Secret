@@ -1,9 +1,21 @@
 package fr.ex.java;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
+	
+	public static List<Integer> generateRandomCode(){
+		
+		Random rand = new Random();
+		List<Integer> code = new ArrayList<>();
+		
+		for (int i = 0; i <4 ; i++) {
+			int digit = rand.nextInt(10);
+			code.add(digit);
+		}
+		
+		return code;
+	}
+	
 	
 	public static List<Integer> getValidCode(){
 		
@@ -19,7 +31,7 @@ public class Main {
 			
 			// Check if exactly 4 values were entered
 	        if (codeArray.length != 4) {
-	            System.out.println("You must enter exactly 4 digits!");
+	            System.out.println("Vous devez entrer exactement 4 chiffres (de 0 a 9)!");
 	            continue;
 	        }
 			
@@ -32,12 +44,12 @@ public class Main {
 					if (value >=0 && value <= 9) {
 						codeList.add(value);
 					} else {
-						System.out.println("Invalid mark (must be between 0 and 9): " + value);
+						System.out.println("Entrée invalide : " + value + "\n");
 	                    allValid = false;
 	                    break;
 					}				
 				} catch (NumberFormatException err) {
-					System.out.println("Invalid input: " + mark);
+					System.out.println("Entrée invalide : " + mark + "\n");
 	                allValid = false;
 	                break;
 				}
@@ -46,7 +58,7 @@ public class Main {
 			if (allValid && !codeList.isEmpty()) {
 				validMarks = true;
 			} else {
-				System.out.println("Please re enter valid code!");
+				System.out.println("Veuillez entre 4 chiffres: ");
 			}
 			
 		}
@@ -56,16 +68,24 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		int mycode = 2657;
+		List<Integer> mycode = generateRandomCode();
+		
+		System.out.print("Le code a deviner: ");
+		for (int i = 0; i < mycode.size(); i++) {
+            System.out.print("* ");
+        }
+        System.out.println();
+		
+		
 		List<Integer> myGuess = getValidCode();
 		
-		System.out.println("Your guess: " + myGuess);
+		System.out.println("Votre essai actuel: " + myGuess);
 		
-		
-		
-		
+	
 		
 
 	}
+	
+	
 
 }
