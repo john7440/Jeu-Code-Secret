@@ -20,7 +20,7 @@ public class Main {
 	    // check les élément mal placé
 	    for (int guessDigit : unmatchedGuess) {
 	        if (unmatchedCode.contains(guessDigit)) {
-	            System.out.println(guessDigit + " is correct but misplaced");
+	            System.out.println(guessDigit + " est correct mais mal placé! ");
 	            unmatchedCode.remove((Integer) guessDigit);
 	        }
 	    }
@@ -28,7 +28,7 @@ public class Main {
 	    // les éléme,nt corrects
 	    for (int i = 0; i < 4; i++) {
 	        if (userGuess.get(i).equals(secretCode.get(i))) {
-	            System.out.println(userGuess.get(i) + " is correct and well placed");
+	            System.out.println(userGuess.get(i) + " est correct! ");
 	        }
 	    }
 	}
@@ -102,6 +102,9 @@ public class Main {
 	public static void main(String[] args) {
 		
 		List<Integer> secretCode = generateRandomCode();
+		int maxTry = 10;
+		int actualTry = 0;
+		boolean found = false;
 		
 		System.out.print("Le code a deviner: ");
 		for (int i = 0; i < secretCode.size(); i++) {
@@ -109,11 +112,23 @@ public class Main {
         }
         System.out.println();
 		
-		
-		List<Integer> userGuess = getValidCode();
-		
-		codeFeedback(secretCode, userGuess);
-		
+        while (actualTry < maxTry && !found) {
+        
+        	System.out.println("Essai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)");
+        	List<Integer> userGuess = getValidCode();
+        	
+        	if (userGuess.equals(secretCode)) {
+        		System.out.println("Félicitations! Vous avez deviné le code secret: " + secretCode +" en " + actualTry + " essais.");
+                found = true;
+        	} else {
+        		codeFeedback(secretCode, userGuess);
+                actualTry++;
+        	}
+        }
+        
+        if (!found) {
+        	System.out.println("Vous avez perdu! Le code a trouver était: " + secretCode);
+        }
 	
 		
 
