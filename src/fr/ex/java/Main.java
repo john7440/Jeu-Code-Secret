@@ -4,6 +4,36 @@ import java.util.*;
 public class Main {
 	
 	
+	public static String updateSecretCodeDisplay(List<Integer> secretCode, List<Integer> userGuess) {
+		StringBuilder display = new StringBuilder();
+	    List<Integer> unmatchedCode = new ArrayList<>();
+	    List<Integer> unmatchedGuess = new ArrayList<>();
+		
+	    for (int i = 0; i < 4; i++) {
+	        if (!userGuess.get(i).equals(secretCode.get(i))) {
+	            unmatchedCode.add(secretCode.get(i));
+	            unmatchedGuess.add(userGuess.get(i));
+	        }
+	    }
+
+	    
+	    for (int i = 0; i < 4; i++) {
+	        int guessDigit = userGuess.get(i);
+	        if (guessDigit == secretCode.get(i)) {
+	            display.append(guessDigit); 
+	        } else if (unmatchedCode.contains(guessDigit)) {
+	            display.append("*"); 
+	            unmatchedCode.remove((Integer) guessDigit);
+	        } else {
+	            display.append("*"); 
+	        }
+	    }
+
+	    return display.toString();
+	}
+	
+	
+	
 	public static String formatCode(List<Integer> code) {
 		
 		StringBuilder formatedCode = new StringBuilder();
@@ -52,8 +82,6 @@ public class Main {
 	        }
 	    }
 	}
-
-	
 	
 	// This method generate 4 random digits (0-9) to make the code to guess
 	public static List<Integer> generateRandomCode(){
@@ -73,48 +101,27 @@ public class Main {
 	public static List<Integer> getValidCode(){
 		
 		Scanner scan =  new Scanner(System.in);
-		
 		List<Integer> codeList = new ArrayList<>();
-		boolean validMarks = false;
+		boolean validInput = false;
 		
-		while (!validMarks) {
-			System.out.println("Veuillez saisir votre code a 4 chiffre : ");
-			String marks = scan.nextLine();
-			String[] codeArray = marks.trim().split("\\s+");
+		while (!validInput) {
+			System.out.println("Veuillez saisir votre code a 4 chiffre (ex: 1234) : ");
+			String input = scan.nextLine().trim();
 			
 			// Check if exactly 4 values were entered
-	        if (codeArray.length != 4) {
+	        if (input.length() != 4 || !input.matches("\\d{4}")) {
 	            System.out.println("Vous devez entrer exactement 4 chiffres (de 0 a 9)!");
 	            continue;
 	        }
 			
-			codeList.clear();
-			boolean allValid = true;
+	        codeList.clear();
+	        for (char c : input.toCharArray()) {
+	        	codeList.add(Character.getNumericValue(c));
+	        }
 			
-			for (String mark : codeArray) {
-				try {
-					int value = Integer.parseInt(mark);
-					if (value >=0 && value <= 9) {
-						codeList.add(value);
-					} else {
-						System.out.println("Entrée invalide : " + value + "\n");
-	                    allValid = false;
-	                    break;
-					}				
-				} catch (NumberFormatException err) {
-					System.out.println("Error: " + err +"\n");
-	                allValid = false;
-	                break;
-				}
-			}
-			
-			if (allValid && !codeList.isEmpty()) {
-				validMarks = true;
-			} else {
-				System.out.println("Veuillez entre 4 chiffres: ");
-			}
-			
+	        validInput = true;
 		}
+		
 		return codeList;
 				
 	}
@@ -139,9 +146,11 @@ public class Main {
         	
         	if (userGuess.equals(secretCode)) {
         		System.out.println("Félicitations! Vous avez deviné le code secret: " + formatCode(secretCode) +" en " + actualTry + " essais.");
+        		System.out.println("Affichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
                 found = true;
         	} else {
         		codeFeedback(secretCode, userGuess);
+        		System.out.println("Affichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
                 actualTry++;
         	}
         }
