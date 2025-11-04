@@ -13,9 +13,15 @@ public class Main {
 		boolean validMarks = false;
 		
 		while (!validMarks) {
-			System.out.println("Veuillez saisir votre code a 4 chiffre: ");
+			System.out.println("Veuillez saisir votre code a 4 chiffre : ");
 			String marks = scan.nextLine();
 			String[] codeArray = marks.trim().split("\\s+");
+			
+			// Check if exactly 4 values were entered
+	        if (codeArray.length != 4) {
+	            System.out.println("You must enter exactly 4 digits!");
+	            continue;
+	        }
 			
 			codeList.clear();
 			boolean allValid = true;
