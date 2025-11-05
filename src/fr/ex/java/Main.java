@@ -125,15 +125,20 @@ public class Main {
 		return code;
 	}
 	
+	// First we verify that input exist and it takes only 
+	// 4 digits otherwise it return false
+	private static boolean isValidInput(String input) {
+	    return input != null && input.matches("\\d{4}");
+	}
+	
 	/**
      * Prompts the user to enter a valid 4 digit code
      * Validates input format and check if digits are between 0 and 9
      *
      * @return a list of 4 digits entered by the user
      */
-	public static List<Integer> getValidCode(){
+	public static List<Integer> getValidCode(Scanner scan){
 		
-		Scanner scan =  new Scanner(System.in);
 		List<Integer> codeList = new ArrayList<>();
 		boolean validInput = false;
 		
@@ -142,7 +147,7 @@ public class Main {
 			String input = scan.nextLine().trim();
 			
 			// Check if exactly 4 values were entered
-	        if (input.length() != 4 || !input.matches("\\d{4}")) {
+	        if (!isValidInput(input)) {
 	            System.out.println("Vous devez entrer exactement 4 chiffres (de 0 a 9)!");
 	            continue;
 	        }
@@ -166,6 +171,7 @@ public class Main {
      * @param args command-line arguments (not used)
      */
 	public static void main(String[] args) {
+		Scanner scan =  new Scanner(System.in);
 		
 		List<Integer> secretCode = generateRandomCode();
 		int maxTry = 10;
@@ -181,7 +187,7 @@ public class Main {
         while (actualTry < maxTry && !found) {
         
         	System.out.println("\nEssai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)");
-        	List<Integer> userGuess = getValidCode();
+        	List<Integer> userGuess = getValidCode(scan);
         	
         	if (userGuess.equals(secretCode)) {
         		System.out.println("Félicitations! Vous avez deviné le code secret: " + formatCode(secretCode) +" en " + actualTry + " essais.");
@@ -197,8 +203,7 @@ public class Main {
         if (!found) {
         	System.out.println("Vous avez perdu! Le code a trouver était: " + formatCode(secretCode));
         }
-	
-
+        scan.close();
 	}
 
 }
