@@ -85,7 +85,7 @@ public class Main {
 	    // We check misplaced elements
 	    for (int guessDigit : unmatchedGuess) {
 	        if (unmatchedCode.contains(guessDigit)) {
-	            System.out.println(guessDigit + " est correct mais mal placé! ");
+	            System.out.println(guessDigit + " est correct mais mal placé ! ");
 	            unmatchedCode.remove((Integer) guessDigit);
 	            alreadyReported.add(guessDigit);
 	        }
@@ -186,22 +186,26 @@ public class Main {
 		
         while (actualTry < maxTry && !found) {
         
-        	System.out.println("\nEssai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)");
+        	System.out.println("\nEssai n°" + actualTry +" (" + (maxTry - actualTry) + " essais restant)\n");
         	List<Integer> userGuess = getValidCode(scan);
         	
         	if (userGuess.equals(secretCode)) {
-        		System.out.println("Félicitations! Vous avez deviné le code secret: " + formatCode(secretCode) +" en " + actualTry + " essais.");
-        		System.out.println("Affichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
+        		System.out.println("----------------------------------------------------------------------");
+        		System.out.println("Félicitations! Vous avez deviné le code secret: " + formatCode(secretCode) +" en " + actualTry + " essais");
+        		System.out.println("----------------------------------------------------------------------");
+        		System.out.println("\nAffichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
                 found = true;
         	} else {
         		codeFeedback(secretCode, userGuess);
-        		System.out.println("Affichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
+        		System.out.println("\nAffichage masqué : " + updateSecretCodeDisplay(secretCode, userGuess));
                 actualTry++;
         	}
         }
         
         if (!found) {
+        	System.out.println("-------------------------------------------------------------");
         	System.out.println("Vous avez perdu! Le code a trouver était: " + formatCode(secretCode));
+        	System.out.println("-------------------------------------------------------------");
         }
         scan.close();
 	}
